@@ -13,3 +13,22 @@ chown vagrant /home/vagrant/.kube
 cp /etc/kubernetes/admin.conf /home/vagrant/.kube/config
 chown vagrant /home/vagrant/.kube/config
 chmod 600 /home/vagrant/.kube/config
+echo "source <(kubectl completion bash)" >> ~/.bashrc 
+
+curl --output /tmp/helm-v3.10.1-linux-amd64.tar.gz https://get.helm.sh/helm-v3.10.1-linux-amd64.tar.gz
+tar -zxvf /tmp/helm-v3.10.1-linux-amd64.tar.gz -C /tmp linux-amd64/helm
+sudo mv /tmp/linux-amd64/helm /usr/local/bin
+
+helm repo add haproxy-ingress https://haproxy-ingress.github.io/charts
+helm repo update
+mkdir /opt/helm/
+
+cat <<EOF > /opt/helm/haproxy-ingress-values.yaml
+---
+controller:
+  hostNetwork: true
+EOF
+
+helm template haproxy-ingress haproxy-ingress/haproxy-ingress --namespace ingress-controller --version 0.13.9 -f /opt/helm/haproxy-ingress-values.yaml > /opt/helm/haproxy-ingress-manifest.yaml
+kubectl create namespace ingress-controller
+kubectl apply -f /opt/helm/haproxy-ingress-manifest.yaml

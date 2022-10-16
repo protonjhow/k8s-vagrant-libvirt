@@ -23,9 +23,9 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.provision "shell", inline: <<-SHELL
-      dnf install -y cloud-utils-growpart
-      growpart /dev/vda 1
-      xfs_growfs /dev/vda1
+      sudo dnf install -y cloud-utils-growpart
+      sudo growpart /dev/vda 1
+      sudo xfs_growfs /dev/vda1
     SHELL
 
   config.vm.provision "shell", path: "common.sh"
