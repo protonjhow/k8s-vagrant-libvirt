@@ -44,7 +44,7 @@ net.bridge.bridge-nf-call-ip6tables = 1
 net.bridge.bridge-nf-call-iptables = 1
 EOF
 
-yum install -y device-mapper-persistent-data lvm2 \
+yum install -y iproute-tc device-mapper-persistent-data lvm2 \
     kubelet kubeadm kubectl docker-ce \
     --disableexcludes=kubernetes,docker-ce-stable
 
