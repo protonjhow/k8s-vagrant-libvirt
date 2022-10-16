@@ -45,7 +45,7 @@ net.bridge.bridge-nf-call-iptables = 1
 EOF
 
 yum install -y iproute-tc device-mapper-persistent-data lvm2 \
-    kubelet kubeadm kubectl docker-ce \
+    kubelet kubeadm kubectl docker-ce jq \
     --disableexcludes=kubernetes,docker-ce-stable
 
 systemctl daemon-reload

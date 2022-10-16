@@ -42,3 +42,5 @@ KUBECONFIG=/etc/kubernetes/admin.conf kubectl apply -f /opt/helm/haproxy-ingress
 
 KUBECONFIG=/etc/kubernetes/admin.conf kubectl create namespace monitoring
 KUBECONFIG=/etc/kubernetes/admin.conf helm install kube-prom-stack prometheus-community/kube-prometheus-stack --namespace monitoring
+echo "Ingress controller is on the following IP: "
+KUBECONFIG=/etc/kubernetes/admin.conf kubectl get pods -n ingress-controller -ojson | jq -r .items[].status.hostIP
