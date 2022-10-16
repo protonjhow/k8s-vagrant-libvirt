@@ -33,3 +33,4 @@ EOF
 helm template haproxy-ingress haproxy-ingress/haproxy-ingress --namespace ingress-controller --version 0.13.9 -f /opt/helm/haproxy-ingress-values.yaml > /opt/helm/haproxy-ingress-manifest.yaml
 kubectl create namespace ingress-controller
 kubectl apply -f /opt/helm/haproxy-ingress-manifest.yaml
+
