@@ -26,6 +26,7 @@ EOF
 mkdir -p /etc/docker
 cat <<EOF > /etc/docker/daemon.json
 {
+  "bip": "100.75.0.1/16",
   "exec-opts": ["native.cgroupdriver=cgroupfs"],
   "log-driver": "json-file",
   "log-opts": {

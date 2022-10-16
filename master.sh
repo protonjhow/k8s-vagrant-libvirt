@@ -2,8 +2,11 @@
 set -e
 
 kubeadm config images pull
-kubeadm init --pod-network-cidr=100.100.0.0/16 --token ${TOKEN}
+kubeadm init --pod-network-cidr=100.100.0.0/16 --token ${TOKEN} --apiserver-advertise-address=${MASTER_IP}
 KUBECONFIG=/etc/kubernetes/admin.conf kubectl apply -f https://gist.githubusercontent.com/protonjhow/c5d887bb6f08af23999c58bdd9f05ceb/raw/6aedb09fff08733a0b2f59fa572d6c45663d2f7c/calico.yaml
+
+echo "KUBELET_EXTRA_ARGS='--node-ip ${MASTER_IP}'" > /etc/sysconfig/kubelet
+systemctl restart kubelet.service
 
 mkdir /home/vagrant/.kube
 chown vagrant /home/vagrant/.kube
