@@ -21,6 +21,8 @@ sudo mv /tmp/linux-amd64/helm /bin
 export PATH=$PATH:/usr/local/bin:/usr/local/sbin
 
 helm repo add haproxy-ingress https://haproxy-ingress.github.io/charts
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo add stable https://charts.helm.sh/stable
 helm repo update
 mkdir /opt/helm/
 
@@ -30,7 +32,13 @@ controller:
   hostNetwork: true
 EOF
 
+cat <<EOF > /opt/helm/kube-prom-stack-values.yaml
+---
+EOF
+
 KUBECONFIG=/etc/kubernetes/admin.conf helm template haproxy-ingress haproxy-ingress/haproxy-ingress --namespace ingress-controller --version 0.13.9 -f /opt/helm/haproxy-ingress-values.yaml > /opt/helm/haproxy-ingress-manifest.yaml
 KUBECONFIG=/etc/kubernetes/admin.conf kubectl create namespace ingress-controller
 KUBECONFIG=/etc/kubernetes/admin.conf kubectl apply -f /opt/helm/haproxy-ingress-manifest.yaml
 
+KUBECONFIG=/etc/kubernetes/admin.conf kubectl create namespace monitoring
+KUBECONFIG=/etc/kubernetes/admin.conf helm install kube-prom-stack prometheus-community/kube-prometheus-stack --namespace monitoring
