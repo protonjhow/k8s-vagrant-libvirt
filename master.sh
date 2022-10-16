@@ -13,7 +13,7 @@ chown vagrant /home/vagrant/.kube
 cp /etc/kubernetes/admin.conf /home/vagrant/.kube/config
 chown vagrant /home/vagrant/.kube/config
 chmod 600 /home/vagrant/.kube/config
-echo "source <(kubectl completion bash)" >> ~/.bashrc 
+echo "source <(kubectl completion bash)" >> /home/vagrant/.bashrc 
 
 curl --output /tmp/helm-v3.10.1-linux-amd64.tar.gz https://get.helm.sh/helm-v3.10.1-linux-amd64.tar.gz
 tar -zxvf /tmp/helm-v3.10.1-linux-amd64.tar.gz -C /tmp linux-amd64/helm
