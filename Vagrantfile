@@ -47,6 +47,12 @@ Vagrant.configure("2") do |config|
     end
     master.vm.provision "shell", path: "local-storage/install.sh"
     master.vm.provision "shell", path: "playground.sh"
+    master.vm.provision "file", source: "./builtin-ca", destination: "/home/vagrant/"
+    master.vm.provision "shell", inline: <<-SHELL
+       sudo cp /home/vagrant/builtin-ca/out/Vagrant-K8s-Cluster-CA-G1.crt /etc/pki/ca-trust/source/anchors/
+       sudo update-ca-trust extract
+     SHELL
+    master.vm.provision "shell", path: "ingress-cert.sh"
   end
 
   (0..NUM_WORKERS-1).each do |i|
